@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enter Passcode</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Change background color to white */
+  }
+  .container {
+    max-width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  .passcode-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .passcode-input input[type="number"] {
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 50px; /* Make the border radius 10px */
+    font-size: 1.2rem;
+    outline: none;
+  }
+  .submit-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+  }
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+  .Ok-btn, .Cancel-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+  }
+  .Ok-btn:hover, .Cancel-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Enter Passcode</h2>
+  <div class="passcode-input">
+    <input type="number" class="passcode-digit" min="0" max="9" autofocus inputmode="numeric">
+    <input type="number" class="passcode-digit" min="0" max="9" inputmode="numeric">
+    <input type="number" class="passcode-digit" min="0" max="9" inputmode="numeric">
+    <input type="number" class="passcode-digit" min="0" max="9" inputmode="numeric">
+    <input type="number" class="passcode-digit" min="0" max="9" inputmode="numeric">
+    <input type="number" class="passcode-digit" min="0" max="9" inputmode="numeric">
+  </div>
+  <button class="submit-btn" onclick="submitPasscode()">Submit</button>
+</div>
+
+<div class="container" style="display: none;" id="submitContainer">
+  <h2>Please Confirm Passcode</h2>
+  <p id="passcodeDisplay"></p>
+  <button class="Ok-btn" onclick="confirmPasscode()">Ok</button>
+  <button class="Cancel-btn" onclick="retypePasscode()">Cancel</button>
+</div>
+
+<script>
+  const passcodeDigits = document.querySelectorAll('.passcode-digit');
+  
+  passcodeDigits.forEach((input, index) => {
+    input.addEventListener('input', function() {
+      if (this.value.length > 1) {
+        this.value = this.value.slice(0, 1); // Only keep the first character
+      }
+      if (this.value.length === 1 && index < passcodeDigits.length - 1) {
+        passcodeDigits[index + 1].focus(); // Focus on the next input field
+      }
+    });
+  });
+
+  function submitPasscode() {
+    let passcode = '';
+    passcodeDigits.forEach(input => {
+      passcode += input.value;
+    });
+
+    if (passcode.length === 6) {
+      document.getElementById('submitContainer').style.display = 'block';
+      document.querySelector('.container').style.display = 'none';
+      document.getElementById('passcodeDisplay').textContent = 'Passcode: ' + passcode;
+    } else {
+      alert('Please enter a 6-digit passcode.');
+    }
+  }
+
+  function confirmPasscode() {
+    let passcode = '';
+    passcodeDigits.forEach(input => {
+      passcode += input.value;
+    });
+    alert('Passcode confirmed: ' + passcode);
+    // Here you can add your logic for confirming the passcode
+  }
+
+  function retypePasscode() {
+    passcodeDigits.forEach(input => {
+      input.value = ''; // Clear all input fields
+    });
+    document.getElementById('submitContainer').style.display = 'none';
+    document.querySelector('.container').style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
